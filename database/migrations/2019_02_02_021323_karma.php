@@ -16,8 +16,8 @@ class Karma extends Migration
         // Creates the karma table
       Schema::create('karma', function (Blueprint $table) {
         $table->increments('id');
-        $table->string('handle', 64);
-        $table->integer('points');
+        $table->string('handle', 64)->nullable(FALSE)->default('');
+        $table->integer('points')->nullable(FALSE)->default(0);
         $table->unique('handle');
         $table->timestamps();
       });
