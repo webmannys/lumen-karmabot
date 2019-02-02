@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Karma;
 
-class KarmaController extends Controller {
+class KarmaController extends Controller
+{
 
   /**
    * Create/update karma points for a given handle.
@@ -14,10 +15,11 @@ class KarmaController extends Controller {
    * @param  Request  $request
    * @return Response
    */
-  public function slackEvent(Request $request) {
-    if ($request->has('challenge')) {
+  public function slackEvent(Request $request)
+  {
+    if ($request->has('challenge') && $request->input('type') == 'url_verification') {
       return response()->json([
-        'challenge' => $request->input['challenge'],
+        'challenge' => $request->input('challenge'),
       ]);
     }
 
