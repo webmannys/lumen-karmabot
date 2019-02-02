@@ -19,6 +19,7 @@ class Karma extends Migration
         $table->string('handle', 64);
         $table->integer('points');
         $table->unique('handle');
+        $table->timestamps();
       });
     }
 
