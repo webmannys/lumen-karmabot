@@ -19,7 +19,7 @@ class KarmaMiddleware {
    * @return void
    */
   public function __construct() {
-    $this->allowed_tokens = explode('', env('ALLOWED_SLACK_TOKENS'));
+    $this->allowed_tokens = explode(',', env('ALLOWED_SLACK_TOKENS'));
   }
 
   /**
