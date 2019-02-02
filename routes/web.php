@@ -12,5 +12,11 @@
 */
 
 $router->get('/', function () use ($router) {
-    return $router->app->version();
+    return [
+      'version' => $router->app->version(),
+    ];
+});
+
+$router->post('/', function() {
+  // Do something.
 });
