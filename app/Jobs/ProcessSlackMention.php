@@ -65,7 +65,7 @@ class ProcessSlackMention extends Job {
     ]);
     if ($response->getStatusCode() == 200) {
       $data = json_decode($response->getBody());
-      return $data['joke'];
+      return $data->joke;
     }
 
   }
