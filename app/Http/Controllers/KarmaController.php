@@ -9,6 +9,15 @@ use App\Models\Karma;
 class KarmaController extends Controller {
 
   /**
+   * Queues request and responds back with 200.
+   *
+   * @param \Illuminate\Http\Request $request
+   */
+  public function queueAndRespond(Request $request) {
+
+  }
+
+  /**
    * Create/update karma points for a given handle.
    *
    * @param  Request $request
@@ -16,12 +25,6 @@ class KarmaController extends Controller {
    * @return Response
    */
   public function slackEvent(Request $request) {
-    if ($request->has('challenge') && $request->input('type') == 'url_verification') {
-      return response()->json([
-        'challenge' => $request->input('challenge'),
-      ]);
-    }
-
     $message = $request->input('text');
     $response = [];
     if ((strpos($message, '++') !== FALSE) || (strpos($message, '--') !== FALSE)) {

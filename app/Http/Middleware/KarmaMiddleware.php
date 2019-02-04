@@ -32,6 +32,11 @@ class KarmaMiddleware {
    */
   public function handle($request, Closure $next) {
     if ($request->has('token') && in_array($request->input('token'), $this->allowed_tokens)) {
+      if ($request->has('challenge') && $request->input('type') == 'url_verification') {
+        return response()->json([
+          'challenge' => $request->input('challenge'),
+        ]);
+      }
       return $next($request);
     }
     return response('Unauthorized.', 401);

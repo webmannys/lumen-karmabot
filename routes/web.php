@@ -19,5 +19,5 @@ $router->get('/', function () use ($router) {
 
 $router->post('/', [
   'middleware' => 'auth_karma',
-  'uses' => 'KarmaController@slackEvent',
+  'uses' => 'KarmaController@queueAndRespond',
 ]);
