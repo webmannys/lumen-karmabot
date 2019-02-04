@@ -41,6 +41,7 @@ class ProcessSlackMention extends Job {
       $response[] = $this->getJoke();
     }
 
+    var_dump($response);
     if (!empty($response)) {
       $slack_client->chat->postMessage([
         'channel' => $event['channel'],
