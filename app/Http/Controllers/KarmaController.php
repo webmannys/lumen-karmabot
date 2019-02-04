@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ProcessSlackMessage;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\Karma;
@@ -12,9 +13,15 @@ class KarmaController extends Controller {
    * Queues request and responds back with 200.
    *
    * @param \Illuminate\Http\Request $request
+   *
+   * @return Response
    */
   public function queueAndRespond(Request $request) {
-
+    $payload = $request->all();
+    dispatch(new ProcessSlackMessage($payload));
+    return response([
+      'success' => TRUE,
+    ]);
   }
 
   /**

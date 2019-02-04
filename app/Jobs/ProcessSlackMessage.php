@@ -2,25 +2,31 @@
 
 namespace App\Jobs;
 
-class ProcessSlackMessage extends Job
-{
-    /**
-     * Create a new job instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
+class ProcessSlackMessage extends Job {
 
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
-    public function handle()
-    {
-        //
-    }
+  protected $payload;
+
+  /**
+   * Create a new job instance.
+   *
+   * @param array $payload
+   *   The payload from the event.
+   *
+   * @return void
+   */
+  public function __construct(array $payload) {
+    $this->payload = $payload;
+  }
+
+  /**
+   * Execute the job.
+   *
+   * @param array $payload
+   *   The payload from the event.
+   *
+   * @return void
+   */
+  public function handle(array $payload) {
+
+  }
 }
