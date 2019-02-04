@@ -6,7 +6,6 @@ use App\Jobs\ProcessSlackMention;
 use App\Jobs\ProcessSlackMessage;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use App\Models\Karma;
 
 class KarmaController extends Controller {
 

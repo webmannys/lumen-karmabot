@@ -35,9 +35,7 @@ class ProcessSlackMessage extends Job {
     // Only process messages that were added the first time around and not empty
     // strings.
     var_dump($event['type']);
-    if ($event['type'] === 'message'
-      && !empty ($message['text'])
-      && empty($message['edited'])) {
+    if ($event['type'] === 'message') {
       $message = $event['text'];
       if ((strpos($message, '++') !== FALSE) || (strpos($message, '--') !== FALSE)) {
         //Yeah, an additional line. But let's not touch $message anytime
@@ -60,6 +58,8 @@ class ProcessSlackMessage extends Job {
         }
       }
     }
+
+    var_dump($response);
     if (!empty($response)) {
       $slack_client->chat->postMessage([
         'channel' => $event['channel'],

@@ -58,7 +58,11 @@ class ProcessSlackMention extends Job {
    */
   private function getJoke() {
     $client = new Client();
-    $response = $client->get('https://icanhazdadjoke.com/');
+    $response = $client->get('https://icanhazdadjoke.com/', [
+      'headers' => [
+        'Accept' => 'application/json',
+      ],
+    ]);
     if ($response->getStatusCode() == 200) {
       $data = json_decode($response->getBody());
       return $data['joke'];
