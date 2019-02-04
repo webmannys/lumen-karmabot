@@ -26,7 +26,9 @@ class ProcessSlackMessage extends Job {
    *
    * @return void
    */
-  public function handle(array $payload) {
-
+  public function handle() {
+    var_dump($this->payload);
+    throw new \RuntimeException('I am still debugging');
   }
+
 }
