@@ -31,23 +31,44 @@ class ProcessSlackMention extends Job {
     $slack_client = new Slack(Config::get('services.slack.token'));
 
     $event = $this->payload['event'];
-    $commands = [
-      'tell me a joke' => "Listen to some 'fun' jokes.",
-      'reset karma' => "This resets karma for the workspace",
-      'show me the karmas' => "This shows who has karma",
-    ];
     $response = [];
-    if (stripos($event['text'], 'tell me a joke')) {
+
+    if (stripos($event['text'], 'help') !== FALSE) {
+      $response[] = $this->getCommands();
+    }
+    elseif (stripos($event['text'], 'tell me a joke') !== FALSE) {
       $response[] = $this->getJoke();
     }
+    elseif (stripos($event['text'], 'show me the karmas') !== FALSE) {
+      $response[] = "I'm not ready!";
+    }
 
-    var_dump($response);
     if (!empty($response)) {
       $slack_client->chat->postMessage([
         'channel' => $event['channel'],
         'text' => implode("\n", $response),
       ]);
     }
+  }
+
+  /**
+   * Does a request for a joke at at the dad project.
+   *
+   * @return string
+   *   A dad joke.
+   */
+  private function getCommands() {
+    $commands = [
+      'help' => "What you see before you.",
+      'tell me a joke' => "Listen to some 'fun' jokes.",
+      'show me the karmas' => "This shows who has karma (still TODO).",
+    ];
+
+    $response[] = 'Below are the commands you can use';
+    foreach ($commands as $command => $description) {
+      $response[] = "'" . $command . "': " . $description;
+    }
+    return implode("\n", $response);
   }
 
   /**
