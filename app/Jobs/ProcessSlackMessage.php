@@ -55,9 +55,6 @@ class ProcessSlackMessage extends Job {
           }
         }
       }
-      else {
-        $response[] = 'I am just debugging here to see what happens';
-      }
     }
     if (!empty($response)) {
       $slack_client->chat->postMessage([
