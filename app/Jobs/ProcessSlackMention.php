@@ -55,7 +55,7 @@ class ProcessSlackMention extends Job {
    * @return string
    *   A dad joke.
    */
-  private function sendJoke() {
+  private function getJoke() {
     $client = new Client();
     $response = $client->get('https://icanhazdadjoke.com/');
     if ($response->getStatusCode() == 200) {
