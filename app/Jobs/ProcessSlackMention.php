@@ -66,7 +66,7 @@ class ProcessSlackMention extends Job {
 
     $response[] = 'Below are the commands you can use';
     foreach ($commands as $command => $description) {
-      $response[] = "'" . $command . "': " . $description;
+      $response[] = "`" . $command . "`: " . $description;
     }
     return implode("\n", $response);
   }
