@@ -34,6 +34,7 @@ class ProcessSlackMessage extends Job {
     $response = [];
     // Only process messages that were added the first time around and not empty
     // strings.
+    var_dump($event['type']);
     if ($event['type'] === 'message'
       && !empty ($message['text'])
       && empty($message['edited'])) {
