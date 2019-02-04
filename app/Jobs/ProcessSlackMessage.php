@@ -32,7 +32,11 @@ class ProcessSlackMessage extends Job {
 
     $event = $this->payload['event'];
     $response = [];
-    if ($event['type'] === 'message') {
+    // Only process messages that were added the first time around and not empty
+    // strings.
+    if ($event['type'] === 'message'
+      && !empty ($message['text'])
+      && empty($message['edited'])) {
       $message = $event['text'];
       if ((strpos($message, '++') !== FALSE) || (strpos($message, '--') !== FALSE)) {
         //Yeah, an additional line. But let's not touch $message anytime
