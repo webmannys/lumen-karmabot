@@ -102,7 +102,7 @@ class ProcessSlackMention extends Job {
    *   The karma list.
    */
   private function getKarmaList() {
-    $karma_users = Karma::orderBy('points')->get();
+    $karma_users = Karma::orderBy('points', 'desc')->get();
     $response = [];
     foreach ($karma_users as $karma_user) {
       $response[] = "<@{$karma_user->handle}>: {$karma_user->points}";
