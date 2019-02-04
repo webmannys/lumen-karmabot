@@ -53,10 +53,10 @@ class ProcessSlackMessage extends Job {
           elseif ($matches[2][$key] == '++') {
             $response [] = $this->slackUpdateAndShow($handle, +1);
           }
-          else {
-            $response [] = "Just debugging here. Seeing what happens";
-          }
         }
+      }
+      else {
+        $response[] = 'I am just debugging here to see what happens';
       }
     }
     if (!empty($response)) {
