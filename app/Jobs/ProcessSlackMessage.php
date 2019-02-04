@@ -30,7 +30,6 @@ class ProcessSlackMessage extends Job {
   public function handle() {
     $slack_client = new Slack(Config::get('services.slack.token'));
 
-    var_dump($this->payload);
     $event = $this->payload['event'];
     $response = [];
     if ($event['type'] === 'message') {
