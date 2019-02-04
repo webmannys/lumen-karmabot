@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Models\Karma;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Config;
 use wrapi\slack\slack as Slack;
@@ -33,6 +34,9 @@ class ProcessSlackMention extends Job {
     $event = $this->payload['event'];
     $response = [];
 
+    // This could potentially be handled by event listeners in the future.
+    // For now, an array approach is just fine.
+
     if (stripos($event['text'], 'help') !== FALSE) {
       $response[] = $this->getCommands();
     }
@@ -40,7 +44,7 @@ class ProcessSlackMention extends Job {
       $response[] = $this->getJoke();
     }
     elseif (stripos($event['text'], 'show me the karmas') !== FALSE) {
-      $response[] = "I'm not ready!";
+      $response[] = $this->getKarmaList();
     }
 
     if (!empty($response)) {
@@ -89,6 +93,21 @@ class ProcessSlackMention extends Job {
       return $data->joke;
     }
 
+  }
+
+  /**
+   * Get a list of all users with karma points.
+   *
+   * @return string
+   *   The karma list.
+   */
+  private function getKarmaList() {
+    $karma_users = Karma::orderBy('points')->get();
+    $response = [];
+    foreach ($karma_users as $karma_user) {
+      $response[] = "<@{$karma_user->handle}>: {$karma_user->points}";
+    }
+    return implode("\n", $response);
   }
 
 }
