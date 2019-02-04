@@ -24,6 +24,12 @@ $app = new Laravel\Lumen\Application(
     dirname(__DIR__)
 );
 
+$app->configure('app');
+$app->configure('database');
+$app->configure('logging');
+$app->configure('queue');
+$app->configure('services');
+
 $app->withFacades();
 $app->withEloquent();
 
