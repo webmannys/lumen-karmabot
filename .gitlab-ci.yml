@@ -4,7 +4,7 @@ stages:
   - production
 
 before_script:
-  - 'which ssh-agent || (apt-get update -y && apt-get install openssh-client rsync -y)'
+  - 'which ssh-agent || (apt-get update -y && apt-get install openssh-client rsync git zip unzip -y)'
   - mkdir -p ~/.ssh
   - chmod 700 ~/.ssh
   - eval $(ssh-agent -s)
