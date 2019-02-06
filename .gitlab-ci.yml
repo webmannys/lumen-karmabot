@@ -4,16 +4,17 @@ stages:
   - production
 
 before_script:
-  - apt-get update -y && apt-get install openssh-client rsync -y
-  - eval $(ssh-agent -s)
+  - 'which ssh-agent || (apt-get update -y && apt-get install openssh-client rsync -y)'
   - mkdir -p ~/.ssh
-  - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+  - chmod 700 ~/.ssh
+  - eval $(ssh-agent -s)
+  - ssh-add <( echo "$DEPLOY_PRIVATE_KEY")
+  - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
   - curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
 
 .deploy:
   stage: deploy_production
   script:
-    - echo "$DEPLOY_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
     - composer install
     - rm -rf .git .env .env.example .gitignore composer.json composer.lock phpunit.xml readme.md storage tests
     - chmod -R og-w .
