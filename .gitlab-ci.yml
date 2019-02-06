@@ -9,7 +9,7 @@ build_artifact:
   artifacts:
     untracked: true
   script:
-    - apt install git -y
+    - 'apt-get update -y && apt-get install git -y'
     - curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
     - composer install
     - rm -rf .git .env .env.example .gitignore composer.json composer.lock phpunit.xml readme.md storage tests
