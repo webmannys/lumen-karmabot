@@ -1,24 +1,26 @@
 image: php:7.1-cli
 
 stages:
+  - build
   - production
 
-before_script:
-  - 'which ssh-agent || (apt-get update -y && apt-get install openssh-client rsync -y)'
-  - mkdir -p ~/.ssh
-  - chmod 700 ~/.ssh
-  - eval $(ssh-agent -s)
-  - ssh-add <( echo "$DEPLOY_PRIVATE_KEY")
-  - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-  - curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
-
-.deploy:
-  stage: deploy_production
+build_artifact:
+  stage: build
+  artifacts:
+    untracked: true
   script:
-    - composer install
+    - curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
+    - composer.install
     - rm -rf .git .env .env.example .gitignore composer.json composer.lock phpunit.xml readme.md storage tests
     - chmod -R og-w .
     - chmod -R a-x+X .
+
+deploy_production:
+  image: btmash/alpine-ssh-rsync:latest
+  stage: production
+  script:
+    - eval $(ssh-agent -s)
+    - echo "$DEPLOY_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
     - ssh -p22 $DEPLOY_URL "mkdir -p $SITE_DIR/releases/$CI_JOB_ID"
     - rsync -aq . $DEPLOY_URL:$SITE_DIR/releases/$CI_JOB_ID
     - ssh -p22 $DEPLOY_URL "ln -s $SITE_DIR/shared/.env $SITE_DIR/releases/$CI_JOB_ID/.env"
@@ -29,9 +31,7 @@ before_script:
     - ssh -p22 $DEPLOY_URL "cd $SITE_DIR/current && php artisan cache:clear"
     - ssh -p22 $DEPLOY_URL "cd $SITE_DIR/current && php artisan queue:restart"
     - ssh -p22 $DEPLOY_URL "ls -1dt $SITE_DIR/releases/* | tail -n +6 | xargs rm -rf"
-
-deploy_production:
-  extends: .deploy
-  stage: production
+  dependencies:
+    - build
   only:
     - master
