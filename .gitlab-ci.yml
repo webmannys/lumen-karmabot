@@ -6,6 +6,8 @@ stages:
 before_script:
   - apt-get update -y && apt-get install openssh-client rsync -y
   - eval $(ssh-agent -s)
+  - mkdir -p ~/.ssh
+  - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
   - curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
 
 .deploy:
