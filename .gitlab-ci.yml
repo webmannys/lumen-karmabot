@@ -32,6 +32,6 @@ deploy_production:
     - ssh -p22 $DEPLOY_URL "cd $SITE_DIR/current && php artisan queue:restart"
     - ssh -p22 $DEPLOY_URL "ls -1dt $SITE_DIR/releases/* | tail -n +6 | xargs rm -rf"
   dependencies:
-    - build
+    - build_artifact
   only:
     - master
