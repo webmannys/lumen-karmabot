@@ -10,7 +10,7 @@ build_artifact:
     untracked: true
   script:
     - curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
-    - composer.install
+    - composer install
     - rm -rf .git .env .env.example .gitignore composer.json composer.lock phpunit.xml readme.md storage tests
     - chmod -R og-w .
     - chmod -R a-x+X .
