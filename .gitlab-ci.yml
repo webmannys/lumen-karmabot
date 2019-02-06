@@ -23,7 +23,7 @@ before_script:
     - rsync -aq . $DEPLOY_URL:$SITE_DIR/releases/$CI_JOB_ID
     - ssh -p22 $DEPLOY_URL "ln -s $SITE_DIR/shared/.env $SITE_DIR/releases/$CI_JOB_ID/.env"
     - ssh -p22 $DEPLOY_URL "ln -s $SITE_DIR/shared/storage $SITE_DIR/releases/$CI_JOB_ID/storage"
-    - ssh -p22 $DEPLOY_URL "cd $SITE_DIR/releases/$CI_JOB_ID && php artisan migrate"
+    - ssh -p22 $DEPLOY_URL "cd $SITE_DIR/releases/$CI_JOB_ID && php artisan migrate --force"
     - ssh -p22 $DEPLOY_URL "rm $SITE_DIR/current"
     - ssh -p22 $DEPLOY_URL "ln -s $SITE_DIR/releases/$CI_JOB_ID $SITE_DIR/current"
     - ssh -p22 $DEPLOY_URL "cd $SITE_DIR/current && php artisan cache:clear"
