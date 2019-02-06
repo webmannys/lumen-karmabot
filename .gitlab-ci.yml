@@ -1,23 +1,9 @@
-image: php:7.1-cli
+image: btmash/alpine-ssh-rsync:latest
 
 stages:
-  - build
   - production
 
-build_artifact:
-  stage: build
-  artifacts:
-    expire_in: 1 day
-  script:
-    - 'apt-get update -y && apt-get install git -y'
-    - curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
-    - composer install
-    - rm -rf .git .env .env.example .gitignore composer.json composer.lock phpunit.xml readme.md storage tests
-    - chmod -R og-w .
-    - chmod -R a-x+X .
-
 deploy_production:
-  image: btmash/alpine-ssh-rsync:latest
   stage: production
   script:
     - eval $(ssh-agent -s)
@@ -26,13 +12,12 @@ deploy_production:
     - rsync -aq . $DEPLOY_URL:$SITE_DIR/releases/$CI_JOB_ID
     - ssh -p22 $DEPLOY_URL "ln -s $SITE_DIR/shared/.env $SITE_DIR/releases/$CI_JOB_ID/.env"
     - ssh -p22 $DEPLOY_URL "ln -s $SITE_DIR/shared/storage $SITE_DIR/releases/$CI_JOB_ID/storage"
+    - ssh -p22 $DEPLOY_URL "cd $SITE_DIR/releases/$CI_JOB_ID && composer install"
     - ssh -p22 $DEPLOY_URL "cd $SITE_DIR/releases/$CI_JOB_ID && php artisan migrate"
     - ssh -p22 $DEPLOY_URL "rm $SITE_DIR/current"
     - ssh -p22 $DEPLOY_URL "ln -s $SITE_DIR/releases/$CI_JOB_ID $SITE_DIR/current"
     - ssh -p22 $DEPLOY_URL "cd $SITE_DIR/current && php artisan cache:clear"
     - ssh -p22 $DEPLOY_URL "cd $SITE_DIR/current && php artisan queue:restart"
     - ssh -p22 $DEPLOY_URL "ls -1dt $SITE_DIR/releases/* | tail -n +6 | xargs rm -rf"
-  dependencies:
-    - build_artifact
   only:
     - master
