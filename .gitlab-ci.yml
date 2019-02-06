@@ -7,7 +7,7 @@ stages:
 build_artifact:
   stage: build
   artifacts:
-    untracked: true
+    expire_in: 1 day
   script:
     - 'apt-get update -y && apt-get install git -y'
     - curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
