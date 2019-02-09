@@ -29,6 +29,7 @@ unit_tests:
     - docker-php-ext-install pdo_mysql
     - composer install
     - mv -f .env.gitlab .env
+    - phpunit
 
 deploy_production:
   stage: production
