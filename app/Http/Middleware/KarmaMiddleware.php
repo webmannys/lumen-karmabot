@@ -39,7 +39,9 @@ class KarmaMiddleware {
       }
       return $next($request);
     }
-    return response('Unauthorized.', 401);
+    return response([
+      'status' => 'unauthorized',
+    ], 401);
   }
 
 }
