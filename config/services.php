@@ -16,6 +16,7 @@ return [
 
   'slack' => [
     'token' => env('SLACK_OAUTH_ACCESS_TOKEN', ''),
+    'client' => env('SLACK_CLIENT_CLASS', 'App\Helpers\SlackTestClient')
   ],
 
 ];

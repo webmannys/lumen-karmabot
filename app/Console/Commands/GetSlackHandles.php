@@ -5,7 +5,6 @@ namespace App\Console\Commands;
 use App\Models\SlackUser;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Config;
-use wrapi\slack\slack as Slack;
 
 class GetSlackHandles extends Command {
 
@@ -36,7 +35,8 @@ class GetSlackHandles extends Command {
    * @return void
    */
   public function __construct() {
-    $this->slack_client = new Slack(Config::get('services.slack.token'));
+    $slack_client_class = Config::get('services.slack.client');
+    $this->slack_client = new $slack_client_class(Config::get('services.slack.token'));
     parent::__construct();
   }
 
