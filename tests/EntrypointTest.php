@@ -22,7 +22,7 @@ class EntrypointTest extends TestCase {
    */
   public function testAccessDeniedPost() {
     $this->json('POST', '/', [])
-      ->seeStatusCode(403)
+      ->seeStatusCode(401)
       ->seeJson([
         'status' => 'unauthorized'
       ]);
