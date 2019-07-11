@@ -18,6 +18,6 @@ $router->get('/', function () use ($router) {
 });
 
 $router->post('/', [
-  'middleware' => 'auth_karma',
+  'middleware' => 'KarmaMiddleware',
   'uses' => 'KarmaController@queueAndRespond',
 ]);

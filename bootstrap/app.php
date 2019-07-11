@@ -74,7 +74,7 @@ $app->singleton(
 // ]);
 
 $app->routeMiddleware([
-  'auth_karma' => \App\Http\Middleware\KarmaMiddleware::class,
+  'KarmaMiddleware' => \App\Http\Middleware\KarmaMiddleware::class,
 ]);
 
 /*
