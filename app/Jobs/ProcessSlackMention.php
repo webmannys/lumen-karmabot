@@ -47,6 +47,9 @@ class ProcessSlackMention extends Job {
     elseif (stripos($event['text'], 'show me the karmas') !== FALSE) {
       $response[] = $this->getKarmaList();
     }
+    elseif (stripos($event['text'], 'who are you?') !== FALSE) {
+      $response[] = $this->shareInfo();
+    }
 
     if (!empty($response)) {
       $slack_client->chat->postMessage([
@@ -66,7 +69,8 @@ class ProcessSlackMention extends Job {
     $commands = [
       'help' => "What you see before you.",
       'tell me a joke' => "Listen to some 'fun' jokes.",
-      'show me the karmas' => "This shows who has karma (still TODO).",
+      'show me the karmas' => "This shows who has karma.",
+      'who are you?' => 'Learn more about this slackbot.',
     ];
 
     $response[] = 'Below are the commands you can use';
@@ -109,6 +113,10 @@ class ProcessSlackMention extends Job {
       $response[] = "<@{$karma_user->handle}>: {$karma_user->points}";
     }
     return implode("\n", $response);
+  }
+
+  private function shareInfo() {
+    return 'My name is slackbot. I am built using PHP and the Lumen Framework. You can clone me at https://gitlab.com/btmash/lumen-karmabot.';
   }
 
 }
