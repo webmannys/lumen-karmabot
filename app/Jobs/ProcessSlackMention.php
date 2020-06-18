@@ -33,6 +33,7 @@ class ProcessSlackMention extends Job {
     $slack_client = new $slack_client_class(Config::get('services.slack.token'));
 
     $event = $this->payload['event'];
+    Log::debug(print_r($this->payload['event'], TRUE));
     $response = [];
 
     // This could potentially be handled by event listeners in the future.
