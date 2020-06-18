@@ -5,7 +5,6 @@ namespace App\Jobs;
 use App\Models\Karma;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Log;
 use wrapi\slack\slack as Slack;
 
 class ProcessSlackMention extends Job {
@@ -34,7 +33,6 @@ class ProcessSlackMention extends Job {
     $slack_client = new $slack_client_class(Config::get('services.slack.token'));
 
     $event = $this->payload['event'];
-    Log::debug(print_r($this->payload['event'], TRUE));
     $response = [];
 
     // This could potentially be handled by event listeners in the future.
@@ -54,10 +52,14 @@ class ProcessSlackMention extends Job {
     }
 
     if (!empty($response)) {
-      $slack_client->chat->postMessage([
+      $payload = [
         'channel' => $event['channel'],
         'text' => implode("\n", $response),
-      ]);
+      ];
+      if (isset($event['thread_ts'])) {
+        $payload['thread_ts'] = $event['thread_ts'];
+      }
+      $slack_client->chat->postMessage($payload);
     }
   }
 
