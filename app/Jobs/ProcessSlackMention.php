@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\Models\Karma;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Log;
 use wrapi\slack\slack as Slack;
 
 class ProcessSlackMention extends Job {
