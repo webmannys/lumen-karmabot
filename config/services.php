@@ -1,5 +1,12 @@
 <?php
 
+$classes = [
+  'testing' => App\Helpers\SlackTestClient::class,
+  'production' => wrapi\slack\slack::class
+];
+
+$slack_environment = env('SLACK_ENV', 'testing');
+
 return [
 
   /*
@@ -16,7 +23,7 @@ return [
 
   'slack' => [
     'token' => env('SLACK_OAUTH_ACCESS_TOKEN', ''),
-    'client' => env('SLACK_CLIENT_CLASS', 'App\Helpers\SlackTestClient')
+    'client' => $classes[$slack_environment],
   ],
 
 ];
