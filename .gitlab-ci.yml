@@ -24,7 +24,6 @@ before_script:
 unit_tests:
   stage: testing
   script:
-    - chmod +x /usr/local/bin/phpunit
     - docker-php-ext-install pdo_mysql
     - composer install
     - mv -f .env.gitlab .env
