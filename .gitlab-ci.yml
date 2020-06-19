@@ -24,12 +24,11 @@ before_script:
 unit_tests:
   stage: testing
   script:
-    - curl --location --output /usr/local/bin/phpunit https://phar.phpunit.de/phpunit-7.5.4.phar
     - chmod +x /usr/local/bin/phpunit
     - docker-php-ext-install pdo_mysql
     - composer install
     - mv -f .env.gitlab .env
-    - phpunit
+    - composer run-tests
 
 deploy_production:
   stage: production
