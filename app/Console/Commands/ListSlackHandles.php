@@ -53,10 +53,11 @@ class ListSlackHandles extends Command {
     $this->output->newLine(2);
     $this->info('Slack Member import complete!');
 
-    $slack_channels = $this->slack_client->conversations->list();
-    foreach ($slack_channels as $slack_channel) {
-      $this->output->writeln($slack_channel['id'] . ' - ' . $slack_channel['name']);
-    }
+//    The below is not currently running as the bot requires the right permissions.
+//    $slack_channels = $this->slack_client->conversations->list();
+//    foreach ($slack_channels as $slack_channel) {
+//      $this->output->writeln($slack_channel['id'] . ' - ' . $slack_channel['name']);
+//    }
   }
 
 }
