@@ -51,7 +51,8 @@ class ProcessSlackMention extends Job {
       $response[] = $this->shareInfo();
     }
 		elseif (stripos($event['text'], 'what is the weather for') !== FALSE) {
-      $response[] = $this->getWeather();
+			$location = substr($event['text'], 40, -1); 
+      $response[] = $this->getWeather($location);
     }
 
     if (!empty($response)) {
@@ -127,8 +128,8 @@ class ProcessSlackMention extends Job {
     return 'My name is slackbot. I am built using PHP and the Lumen Framework. You can clone me at https://gitlab.com/btmash/lumen-karmabot.';
   }
 	
-	private function getWeather() {
-    return 'It is Sunny.';
+	private function getWeather($location) {
+    return $location;
   }
 
 }
