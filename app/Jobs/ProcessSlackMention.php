@@ -55,7 +55,6 @@ class ProcessSlackMention extends Job {
 		elseif (stripos($event['text'], 'what is the weather for') !== FALSE) {
 			$location = substr($event['text'], 39, -1);
       $response[] = $this->getWeather($location);
-			Log::debug($response);
     }
 
     if (!empty($response)) {
@@ -144,7 +143,6 @@ class ProcessSlackMention extends Job {
 		{
 			$url = 'http://api.openweathermap.org/data/2.5/weather?q='.$location.'&units=imperial&appid='.$key;
 		}
-	
 				
     $client = new Client();
     $response = $client->get($url, [
@@ -153,10 +151,18 @@ class ProcessSlackMention extends Job {
       ],
     ]);
     if ($response->getStatusCode() == 200) {
+			
       $data = json_decode($response->getBody());
-			// return $data->main->0['temp'];
-			// return $data;
-			return "It is currently ".$data->main->temp."F";
+			
+			$temp = $data->main->temp;
+			$temp_min = $data->main->temp_min;
+			$temp_max = $data->main->temp_max;
+			$humidity = $data->main->humidity;
+			$feels_like = $data->main->feels_like;
+			
+			$response = "The temperature is currently ".$temp."F. The humidity is ".$humidity."%. It feels like ".$feels_like."F. The low temperature for today is ".$temp_min."F. The high temperature for today is ".$temp_max."F.";
+			
+			return $response;
     }
 		
   }
