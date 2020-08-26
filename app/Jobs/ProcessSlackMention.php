@@ -6,6 +6,8 @@ use App\Models\Karma;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Config;
 use wrapi\slack\slack as Slack;
+use IlluminateSupportFacadesLog;
+use Log;
 
 class ProcessSlackMention extends Job {
 
@@ -51,8 +53,9 @@ class ProcessSlackMention extends Job {
       $response[] = $this->shareInfo();
     }
 		elseif (stripos($event['text'], 'what is the weather for') !== FALSE) {
-			$location = substr($event['text'], 40, -1); 
+			$location = substr($event['text'], 39, -1);
       $response[] = $this->getWeather($location);
+			Log::debug($response);
     }
 
     if (!empty($response)) {
@@ -129,7 +132,33 @@ class ProcessSlackMention extends Job {
   }
 	
 	private function getWeather($location) {
-    return $location;
+		
+	
+		$key = env('WEATHER_API_KEY');
+		
+		if (is_numeric($location))
+		{
+			$url = 'http://api.openweathermap.org/data/2.5/weather?zip='.$location.'&units=imperial&appid='.$key;
+		}
+		else
+		{
+			$url = 'http://api.openweathermap.org/data/2.5/weather?q='.$location.'&units=imperial&appid='.$key;
+		}
+	
+				
+    $client = new Client();
+    $response = $client->get($url, [
+      'headers' => [
+        'Accept' => 'application/json',
+      ],
+    ]);
+    if ($response->getStatusCode() == 200) {
+      $data = json_decode($response->getBody());
+			// return $data->main->0['temp'];
+			// return $data;
+			return "It is currently ".$data->main->temp."F";
+    }
+		
   }
 
 }
