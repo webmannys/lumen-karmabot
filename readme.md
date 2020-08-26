@@ -31,6 +31,11 @@ You also need to subscribe the bot to the following event subscriptions:
 - `message.channels`
 - `message.groups` (this one is optional and really only use the bot in private groups).
 
+To setup weather feature:
+
+Goto https://openweathermap.org/ and get an API key.
+Add the key to WEATHER_API_KEY in the .env file.
+
 ## About Lumen
 [![Build Status](https://travis-ci.org/laravel/lumen-framework.svg)](https://travis-ci.org/laravel/lumen-framework)
 [![Total Downloads](https://poser.pugx.org/laravel/lumen-framework/d/total.svg)](https://packagist.org/packages/laravel/lumen-framework)
