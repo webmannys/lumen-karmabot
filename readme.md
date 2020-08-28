@@ -33,7 +33,7 @@ You also need to subscribe the bot to the following event subscriptions:
 
 To setup weather feature:
 
-- Goto https://openweathermap.org/ and get an API key.
+- Go to https://openweathermap.org/ and get an API key.
 - Add the key to WEATHER_API_KEY in the .env file.
 
 ## About Lumen
