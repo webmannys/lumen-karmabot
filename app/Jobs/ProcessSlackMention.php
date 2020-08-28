@@ -141,27 +141,32 @@ class ProcessSlackMention extends Job {
 		{
 			$url = 'http://api.openweathermap.org/data/2.5/weather?q='.$location.'&units=imperial&appid='.$key;
 		}
+		
+		if ($key != "")
+		{
+			$client = new Client();
+			$response = $client->get($url, [
+				'headers' => [
+					'Accept' => 'application/json',
+				],
+			]);
+			if ($response->getStatusCode() == 200) {
+				$data = json_decode($response->getBody());
+				$temp = $data->main->temp;
+				$temp_min = $data->main->temp_min;
+				$temp_max = $data->main->temp_max;
+				$humidity = $data->main->humidity;
+				$feels_like = $data->main->feels_like;
 				
-    $client = new Client();
-    $response = $client->get($url, [
-      'headers' => [
-        'Accept' => 'application/json',
-      ],
-    ]);
-    if ($response->getStatusCode() == 200) {
-			
-      $data = json_decode($response->getBody());
-			
-			$temp = $data->main->temp;
-			$temp_min = $data->main->temp_min;
-			$temp_max = $data->main->temp_max;
-			$humidity = $data->main->humidity;
-			$feels_like = $data->main->feels_like;
-			
-			$response = "The temperature is currently ".$temp."F. The humidity is ".$humidity."%. It feels like ".$feels_like."F. The low temperature for today is ".$temp_min."F. The high temperature for today is ".$temp_max."F.";
-			
-			return $response;
-    }
+				$response = "The temperature is currently ".$temp."F. The humidity is ".$humidity."%. It feels like ".$feels_like."F. The low temperature for today is ".$temp_min."F. The high temperature for today is ".$temp_max."F.";
+				
+				return $response;
+			}
+		}
+		else
+		{
+			return "Install Open Weather API Key in the .env file";
+		}
 		
   }
 
