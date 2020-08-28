@@ -152,11 +152,11 @@ class ProcessSlackMention extends Job {
 			]);
 			if ($response->getStatusCode() == 200) {
 				$data = json_decode($response->getBody());
-				$temp = $data->main->temp;
-				$temp_min = $data->main->temp_min;
-				$temp_max = $data->main->temp_max;
+				$temp = round($data->main->temp);
+				$temp_min = round($data->main->temp_min);
+				$temp_max = round($data->main->temp_max);
 				$humidity = $data->main->humidity;
-				$feels_like = $data->main->feels_like;
+				$feels_like = round($data->main->feels_like);
 				
 				$response = "The temperature is currently ".$temp."F. The humidity is ".$humidity."%. It feels like ".$feels_like."F. The low temperature for today is ".$temp_min."F. The high temperature for today is ".$temp_max."F.";
 				
