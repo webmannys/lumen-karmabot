@@ -54,6 +54,10 @@ class ProcessSlackMention extends Job {
 			$location = substr($event['text'], 39, -1);
       $response[] = $this->getWeather($location);
     }
+		elseif (stripos($event['text'], 'what is the air quality for') !== FALSE) {
+			$location = substr($event['text'], 39, -1);
+      $response[] = $this->getAirQuality($location);
+    }
 
     if (!empty($response)) {
       $payload = [
@@ -80,6 +84,7 @@ class ProcessSlackMention extends Job {
       'show me the karmas' => "This shows who has karma.",
       'who are you?' => 'Learn more about this slackbot.',
       'what is the weather for <location>?' => 'Get the weather for a city or by zip code.',
+      'what is the air quality for <location>?' => 'Get the air quality for a zip code.',
     ];
 
     $response[] = 'Below are the commands you can use';
@@ -169,5 +174,11 @@ class ProcessSlackMention extends Job {
 		}
 		
   }
+	
+	private function getAirQuality($location) {
+		
+		$key = env('AIR_API_KEY');
+		
+	}
 
 }
