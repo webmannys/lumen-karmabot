@@ -55,7 +55,7 @@ class ProcessSlackMention extends Job {
       $response[] = $this->getWeather($location);
     }
 		elseif (stripos($event['text'], 'what is the air quality for') !== FALSE) {
-			$location = substr($event['text'], 39, -1);
+			$location = substr($event['text'], 43, -1);
       $response[] = $this->getAirQuality($location);
     }
 
@@ -177,7 +177,37 @@ class ProcessSlackMention extends Job {
 	
 	private function getAirQuality($location) {
 		
+		if (!is_numeric($location))
+		{
+			return "Please enter an numeric Zip Code only.";
+		}
+		
 		$key = env('AIR_API_KEY');
+		
+		$url = 'http://www.airnowapi.org/aq/observation/zipCode/current/?format=application/json&zipCode='.$location.'&distance=5&API_KEY='.$key;
+		
+		if ($key != "")
+		{
+			$client = new Client();
+			$response = $client->get($url, [
+				'headers' => [
+					'Accept' => 'application/json',
+				],
+			]);
+			if ($response->getStatusCode() == 200) {
+				$data = json_decode($response->getBody());
+				$AQI = $data[0]->AQI;
+				$category = $data[0]->Category->Name;
+				
+				$response = "The Air Quality is ".$category." and the Air Quality Index is ".$AQI.".";
+				
+				return $response;
+			}
+		}
+		else
+		{
+			return "Install AirNow API Key in the .env file";
+		}
 		
 	}
 
