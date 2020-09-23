@@ -36,6 +36,11 @@ To setup weather feature:
 - Go to https://openweathermap.org/ and get an API key.
 - Add the key to WEATHER_API_KEY in the .env file.
 
+To setup Air Quality feature:
+
+- Go to https://docs.airnowapi.org/ and get an API key.
+- Add the key to AIR_API_KEY in the .env file.
+
 ## About Lumen
 [![Build Status](https://travis-ci.org/laravel/lumen-framework.svg)](https://travis-ci.org/laravel/lumen-framework)
 [![Total Downloads](https://poser.pugx.org/laravel/lumen-framework/d/total.svg)](https://packagist.org/packages/laravel/lumen-framework)
